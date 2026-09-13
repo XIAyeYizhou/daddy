@@ -1,0 +1,272 @@
+/* ============================================================
+   字卡 · 玻璃信使 — 「一起听音乐」页面样式
+   约定：
+   · 类名统一 .mu- 前缀，页面根为 .mu-page
+   · 全部规则只服务 music 路由，不覆盖 styles.css 中的既有类
+     （唯一样例命名的 .mu-progress 一律写成 .mu-page .mu-progress，
+       作用域限定在本页内，不影响全局同名类）
+   · 颜色全部取自现有 CSS 变量：--c-ui / --c-page / --c-bubble / --c-name / --c-id
+   · 深色模式统一用 #phone.dark 前缀覆盖
+   ============================================================ */
+
+/* ---------- 页面容器 ---------- */
+.mu-page {
+  display: flex; flex-direction: column; gap: 14px;
+  padding: 16px 16px 150px;
+  background: var(--c-page);
+}
+
+/* ---------- 正在播放 ---------- */
+.mu-now {
+  padding: 18px 18px 16px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, .58);
+  -webkit-backdrop-filter: blur(20px) saturate(1.6);
+  backdrop-filter: blur(20px) saturate(1.6);
+  border: 1px solid rgba(255, 255, 255, .7);
+  box-shadow: 0 10px 30px rgba(31, 38, 80, .09);
+}
+.mu-now-top { display: flex; align-items: center; gap: 14px; }
+
+.mu-cover {
+  position: relative; overflow: hidden; flex-shrink: 0;
+  width: 88px; height: 88px; border-radius: 20px;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff;
+  background: linear-gradient(145deg, var(--c-ui), rgba(0, 0, 0, .34));
+  box-shadow: 0 12px 26px rgba(31, 38, 80, .2);
+}
+.mu-cover::after {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle at 30% 24%, rgba(255, 255, 255, .38), transparent 62%);
+}
+.mu-cover > svg { position: relative; z-index: 1; }
+.mu-cover.on { animation: muPulse 2.8s ease-in-out infinite; }
+@keyframes muPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.045); }
+}
+
+.mu-song { flex: 1; min-width: 0; }
+.mu-song-name {
+  font-size: 16px; font-weight: 700; color: var(--c-name);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.mu-song-sub {
+  font-size: 12px; color: var(--c-id); margin-top: 5px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+.mu-mode {
+  flex-shrink: 0;
+  display: inline-flex; flex-direction: column; align-items: center; gap: 3px;
+  padding: 8px 10px; border-radius: 14px;
+  font-size: 11px; color: var(--c-ui);
+  background: rgba(255, 255, 255, .6);
+  border: 1px solid rgba(255, 255, 255, .85);
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  transition: transform .12s;
+}
+.mu-mode:active { transform: scale(.94); }
+
+/* 进度条：样例命名的 .mu-progress 在这里始终以 .mu-page 作用域书写，
+   既不改动 styles.css 的全局 .mu-progress，也能独立完整生效 */
+.mu-page .mu-progress {
+  height: 6px; margin: 22px 2px 0;
+  border-radius: 999px; overflow: hidden;
+  background: rgba(0, 0, 0, .09);
+}
+.mu-bar-in {
+  width: 0; height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--c-ui), rgba(0, 0, 0, .28));
+  transition: width .2s linear;
+}
+.mu-times {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 8px; font-size: 11px; color: var(--c-id);
+  font-variant-numeric: tabular-nums;
+}
+.mu-cur, .mu-tot { font-variant-numeric: tabular-nums; }
+.mu-tot { opacity: .85; }
+
+.mu-ctrl {
+  display: flex; align-items: center; justify-content: center;
+  gap: 30px; margin-top: 14px;
+}
+.mu-ctrl-btn {
+  width: 46px; height: 46px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--c-name);
+  background: rgba(255, 255, 255, .6);
+  border: 1px solid rgba(255, 255, 255, .85);
+  transition: transform .12s;
+}
+.mu-ctrl-btn:active { transform: scale(.92); }
+.mu-main {
+  width: 62px; height: 62px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; background: var(--c-ui);
+  box-shadow: 0 10px 26px rgba(31, 38, 80, .22);
+  transition: transform .12s;
+}
+.mu-main:active { transform: scale(.94); }
+
+/* ---------- 一起听 ---------- */
+.mu-live {
+  padding: 16px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, .58);
+  -webkit-backdrop-filter: blur(20px) saturate(1.6);
+  backdrop-filter: blur(20px) saturate(1.6);
+  border: 1px solid rgba(255, 255, 255, .7);
+  box-shadow: 0 10px 30px rgba(31, 38, 80, .09);
+}
+.mu-live-row { display: flex; align-items: center; gap: 12px; }
+.mu-live-ic {
+  width: 36px; height: 36px; border-radius: 12px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--c-ui); background: rgba(0, 0, 0, .05);
+}
+.mu-live-info { flex: 1; min-width: 0; }
+.mu-live-t { font-size: 15px; font-weight: 700; color: var(--c-name); }
+.mu-live-s { font-size: 11.5px; color: var(--c-id); margin-top: 4px; }
+.mu-live-sw { flex-shrink: 0; }
+
+.mu-live-body {
+  display: flex; align-items: center; gap: 12px;
+  margin-top: 14px; padding-top: 14px;
+  border-top: 1px solid rgba(0, 0, 0, .06);
+  animation: muFadeIn .3s ease;
+}
+@keyframes muFadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: none; }
+}
+.mu-live-ava { box-shadow: 0 6px 16px rgba(31, 38, 80, .16); }
+.mu-live-txt { flex: 1; min-width: 0; }
+.mu-live-name {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 14px; font-weight: 600; color: var(--c-name);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.mu-live-badge {
+  flex-shrink: 0; padding: 2px 8px; border-radius: 999px;
+  font-size: 10.5px; font-weight: 600;
+  background: var(--c-bubble); color: var(--c-bubble-text);
+}
+.mu-live-time { font-size: 11.5px; color: var(--c-id); margin-top: 5px; }
+.mu-live-dur { color: var(--c-ui); font-weight: 700; font-variant-numeric: tabular-nums; }
+
+/* ---------- 添加本地音乐 ---------- */
+.mu-add {
+  width: 100%; padding: 14px;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  border-radius: 18px; font-size: 14.5px; font-weight: 600;
+  color: var(--c-ui);
+  background: rgba(255, 255, 255, .55);
+  border: 1px dashed rgba(154, 167, 181, .6);
+  -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+  transition: transform .12s;
+}
+.mu-add:active { transform: scale(.985); }
+
+/* ---------- 播放列表 ---------- */
+.mu-sec {
+  display: flex; align-items: baseline; justify-content: space-between;
+  padding: 4px 6px 0;
+}
+.mu-sec-t { font-size: 13px; font-weight: 700; color: var(--c-name); letter-spacing: .5px; }
+.mu-sec-n { font-size: 11px; color: var(--c-id); }
+
+.mu-list { display: flex; flex-direction: column; gap: 8px; }
+.mu-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 14px; border-radius: 16px;
+  background: rgba(255, 255, 255, .55);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  backdrop-filter: blur(16px) saturate(1.4);
+  border: 1px solid rgba(255, 255, 255, .7);
+  box-shadow: 0 6px 18px rgba(31, 38, 80, .06);
+  cursor: pointer;
+  transition: transform .12s, background .2s, box-shadow .2s;
+}
+.mu-row:active { transform: scale(.985); }
+.mu-row.on {
+  background: rgba(255, 255, 255, .8);
+  box-shadow: inset 0 0 0 1px var(--c-ui), 0 8px 22px rgba(31, 38, 80, .1);
+}
+.mu-row-idx {
+  width: 22px; flex-shrink: 0; text-align: center;
+  font-size: 12px; font-weight: 700; color: var(--c-id);
+  font-variant-numeric: tabular-nums;
+}
+.mu-row.on .mu-row-idx { color: var(--c-ui); }
+.mu-row-txt { flex: 1; min-width: 0; }
+.mu-row-name {
+  font-size: 14px; font-weight: 600; color: var(--c-name);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.mu-row-sub {
+  font-size: 11px; color: var(--c-id); margin-top: 3px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.mu-row-dur {
+  flex-shrink: 0; font-size: 12px; color: var(--c-id);
+  font-variant-numeric: tabular-nums;
+}
+.mu-row-del {
+  width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: #b9c0d4;
+  transition: background .2s, color .2s;
+}
+.mu-row-del:active { background: rgba(255, 59, 48, .12); color: #ff3b30; }
+
+/* ---------- 空状态（沿用 styles.css 的 .empty/.empty-ic/.empty-t） ---------- */
+.mu-page .empty { padding: 56px 24px 46px; }
+
+/* ============================================================
+   夜间模式
+   ============================================================ */
+#phone.dark .mu-page { background: transparent; }
+
+#phone.dark .mu-now,
+#phone.dark .mu-live,
+#phone.dark .mu-add,
+#phone.dark .mu-row {
+  background: var(--dark-card);
+  border-color: rgba(255, 255, 255, .08);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, .35);
+  color: var(--dark-text);
+}
+#phone.dark .mu-add { border-style: dashed; border-color: rgba(255, 255, 255, .2); }
+#phone.dark .mu-row.on {
+  background: var(--dark-card2);
+  box-shadow: inset 0 0 0 1px var(--c-ui);
+}
+#phone.dark .mu-song-name,
+#phone.dark .mu-row-name,
+#phone.dark .mu-sec-t,
+#phone.dark .mu-live-t,
+#phone.dark .mu-live-name { color: var(--dark-text); }
+#phone.dark .mu-song-sub,
+#phone.dark .mu-row-sub,
+#phone.dark .mu-row-dur,
+#phone.dark .mu-row-idx,
+#phone.dark .mu-sec-n,
+#phone.dark .mu-times,
+#phone.dark .mu-live-s,
+#phone.dark .mu-live-time { color: var(--dark-sub); }
+#phone.dark .mu-mode,
+#phone.dark .mu-ctrl-btn {
+  background: var(--dark-card2);
+  border-color: rgba(255, 255, 255, .08);
+  color: var(--dark-text);
+}
+#phone.dark .mu-mode { color: var(--c-ui); }
+#phone.dark .mu-live-ic { background: rgba(255, 255, 255, .08); }
+#phone.dark .mu-live-body { border-top-color: rgba(255, 255, 255, .08); }
+#phone.dark .mu-page .mu-progress { background: rgba(255, 255, 255, .14); }
+#phone.dark .mu-page .empty-ic { background: var(--dark-card2); color: var(--dark-sub); }
+#phone.dark .mu-cover { box-shadow: 0 12px 30px rgba(0, 0, 0, .45); }

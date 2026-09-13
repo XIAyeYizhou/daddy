@@ -1,0 +1,175 @@
+/* ============================================================
+   MARINE LINK — 「我的」页面 · 主题颜色自定义
+   · 全部类名使用 pf- / th- 前缀，不覆盖 styles.css 既有类
+   · 颜色一律取自 CSS 变量，随主题与深色模式实时变化
+   ============================================================ */
+
+/* ---------- 页面骨架 ---------- */
+.pf-body { padding: 4px 20px 64px; }
+
+.pf-head .ph-title { color: var(--c-font); }
+
+.pf-card {
+  background: rgba(255,255,255,.86);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  backdrop-filter: blur(20px) saturate(1.5);
+  border: 1px solid rgba(255,255,255,.9);
+  border-radius: 22px;
+  padding: 6px 18px;
+  margin-bottom: 16px;
+  box-shadow: 0 8px 26px rgba(31,38,80,.07);
+}
+
+/* 个人信息卡：头像居中，资料行分栏 */
+.pf-card-me { padding: 22px 18px 8px; text-align: center; }
+
+.pf-ava-btn {
+  position: relative;
+  display: inline-flex;
+  width: 84px; height: 84px;
+  border-radius: 50%;
+  transition: transform .18s;
+}
+.pf-ava-btn:active { transform: scale(.95); }
+.pf-ava-btn .avatar { display: block; border: 3px solid rgba(255,255,255,.95); box-shadow: 0 12px 28px rgba(31,38,80,.18); }
+.pf-ava-edit {
+  position: absolute; right: -3px; bottom: -3px;
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--c-ui); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 12px rgba(31,38,80,.25);
+}
+
+/* ---------- 资料行 ---------- */
+.pf-rows { margin-top: 16px; }
+.pf-row {
+  display: flex; align-items: center; gap: 10px;
+  width: 100%; min-height: 52px; padding: 13px 2px;
+  text-align: left;
+}
+.pf-rows > .pf-row + .pf-row { border-top: 1px solid rgba(0,0,0,.06); }
+.pf-row-tap { transition: opacity .15s; }
+.pf-row-tap:active { opacity: .5; }
+.pf-row-k { flex-shrink: 0; font-size: 15px; font-weight: 500; color: var(--c-name); }
+.pf-row-v {
+  flex: 1; min-width: 0; text-align: right;
+  font-size: 14px; color: var(--c-id);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.pf-row-empty { font-size: 13px; color: var(--c-id); opacity: .7; }
+.pf-row-acc { font-variant-numeric: tabular-nums; letter-spacing: .3px; }
+.pf-row-hint { flex: 1; min-width: 0; text-align: right; font-size: 12px; color: var(--c-id); }
+.pf-row-ar { display: inline-flex; flex-shrink: 0; color: #c3c8d6; }
+
+/* 深色模式开关行：文案与开关同排，行高略高于普通资料行 */
+.pf-row-dark { min-height: 56px; padding: 8px 2px; }
+.pf-row-dark .pf-row-hint { margin-right: 2px; }
+
+/* ---------- 分组标题 / 小提示 ---------- */
+.pf-sec {
+  padding: 2px 6px 10px;
+  font-size: 12px; font-weight: 600; letter-spacing: 1px;
+  color: var(--c-id);
+}
+.pf-hint { padding: 10px 2px 2px; font-size: 12px; letter-spacing: .5px; color: var(--c-id); }
+.pf-hint-gap { padding-top: 16px; }
+
+/* ---------- 预设色卡（小圆点网格） ---------- */
+.th-sws {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 9px;
+  padding: 12px 0 2px;
+}
+.th-sw {
+  position: relative;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  padding: 12px 2px 11px;
+  border-radius: 16px;
+  background: rgba(120,130,160,.07);
+  border: 1.5px solid transparent;
+  transition: transform .16s, background .2s, border-color .2s;
+}
+.th-sw:active { transform: scale(.94); }
+.th-sw.on { border-color: var(--c-ui); background: rgba(120,130,160,.12); }
+.th-sw-dots { display: flex; gap: 3px; }
+.th-sw-dots i {
+  width: 14px; height: 14px; border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.08);
+}
+.th-sw-lb { font-size: 11px; white-space: nowrap; color: var(--c-name); }
+.th-sw-ok {
+  position: absolute; top: 5px; right: 5px;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--c-ui); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transform: scale(.55);
+  transition: opacity .2s, transform .2s;
+}
+.th-sw.on .th-sw-ok { opacity: 1; transform: scale(1); }
+
+/* ---------- 自定义取色器 ---------- */
+.th-colors { display: flex; flex-direction: column; padding: 2px 0 10px; }
+.th-color { display: flex; align-items: center; gap: 10px; min-height: 50px; padding: 9px 2px; }
+.th-color + .th-color { border-top: 1px solid rgba(0,0,0,.05); }
+.th-color-k { flex-shrink: 0; font-size: 14px; color: var(--c-name); }
+.th-color-hint {
+  flex: 1; min-width: 0; text-align: right;
+  font-size: 11px; color: var(--c-id);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.th-color-inp {
+  -webkit-appearance: none; appearance: none;
+  width: 44px; height: 30px; padding: 0;
+  border: none; border-radius: 9px; background: none; cursor: pointer;
+  flex-shrink: 0;
+}
+.th-color-inp::-webkit-color-swatch-wrapper { padding: 0; }
+.th-color-inp::-webkit-color-swatch { border: 1px solid rgba(0,0,0,.12); border-radius: 9px; }
+.th-color-inp::-moz-color-swatch { border: 1px solid rgba(0,0,0,.12); border-radius: 9px; }
+.th-color-v {
+  min-width: 62px; text-align: right;
+  font-size: 12px; color: var(--c-id);
+  letter-spacing: .3px; font-variant-numeric: tabular-nums;
+}
+
+/* ---------- 恢复默认 ---------- */
+.pf-reset { width: 100%; margin-top: 4px; color: var(--c-ui); }
+
+/* ============================================================
+   深色模式
+   ============================================================ */
+#phone.dark .pf-head .ph-title { color: var(--dark-text); }
+
+#phone.dark .pf-card {
+  background: rgba(31,31,34,.9);
+  border-color: rgba(255,255,255,.08);
+  box-shadow: 0 10px 26px rgba(0,0,0,.35);
+}
+#phone.dark .pf-ava-btn .avatar { border-color: rgba(46,46,50,.98); }
+#phone.dark .pf-row-k,
+#phone.dark .th-color-k,
+#phone.dark .th-sw-lb { color: var(--dark-text); }
+#phone.dark .pf-row-v,
+#phone.dark .pf-row-empty,
+#phone.dark .pf-row-hint,
+#phone.dark .pf-sec,
+#phone.dark .pf-hint,
+#phone.dark .th-color-hint,
+#phone.dark .th-color-v { color: var(--dark-sub); }
+#phone.dark .pf-row-ar { color: #5c5c62; }
+#phone.dark .pf-rows > .pf-row + .pf-row,
+#phone.dark .th-color + .th-color { border-top-color: rgba(255,255,255,.07); }
+
+#phone.dark .th-sw { background: rgba(255,255,255,.05); }
+#phone.dark .th-sw.on { background: rgba(255,255,255,.1); }
+#phone.dark .th-sw-dots i { box-shadow: inset 0 0 0 1px rgba(255,255,255,.14); }
+#phone.dark .th-color-inp::-webkit-color-swatch { border-color: rgba(255,255,255,.16); }
+#phone.dark .th-color-inp::-moz-color-swatch { border-color: rgba(255,255,255,.16); }
+
+#phone.dark .pf-reset {
+  background: var(--dark-card2);
+  border-color: rgba(255,255,255,.08);
+  color: var(--c-ui);
+  box-shadow: 0 8px 20px rgba(0,0,0,.35);
+}
